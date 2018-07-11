@@ -1,11 +1,14 @@
 node_modules/
 .node_modules/
-**/tests/**/*.js
-**/tests/**/*.js.map
-**/scripts/**
+out/
 **/.DS_Store
 **/.vs
 **/.vscode
 !**/.vscode/tasks.json
 .failed-tests
+
+logs
 *.log
+npm-debug.log*
+
+.taskkey
