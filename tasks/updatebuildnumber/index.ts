@@ -7,7 +7,7 @@ async function run() {
         var sourceBranchName = tl.getInput("sourceBranchName",true);
         var gitCommitId = tl.getInput("gitCommitId",true);
         var buildId = tl.getInput("buildId",true);
-        var prNumber = tl.getInput("prNumber",(buildReason == "PullRequest")); // required if build reason is PR
+        var prNumber = getPullRequestId();
 
         var buildTag = "";
 
@@ -17,8 +17,8 @@ async function run() {
             shortCommitId = gitCommitId.substring(0,7);
         
         // If it is a pull request
-        if(buildReason == "PullRequest" && prNumber != null) {
-            buildTag = sourceBranchName + "-pr-" + prNumber + "-" + shortCommitId + "-" + buildId;
+        if(prNumber != null) {
+            buildTag = "pr-" + prNumber + "-" + shortCommitId + "-" + buildId;
         }
         else {
             buildTag = sourceBranchName + "-" + shortCommitId + "-" + buildId;
@@ -30,6 +30,23 @@ async function run() {
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
+}
+
+function getPullRequestId() {
+    let sourceBranch: string = tl.getVariable('Build.SourceBranch');
+    if (!sourceBranch.startsWith('refs/pull/')) {
+        return null;
+    }
+
+    var pullRequestId: number = Number.parseInt(sourceBranch.replace('refs/pull/', ''));
+
+    if (isNaN(pullRequestId)) {
+        console.log(`Expected pull request ID to be a number. Attempted to parse: ${sourceBranch.replace('refs/pull/', '')}`);
+        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
+        process.exit(1);
+    }
+
+    return pullRequestId;
 }
 
 run();
