@@ -10,7 +10,8 @@ async function run() {
         var prNumberInput = tl.getInput("prNumber",true);
         var prNumber = getPullRequestId();
 
-        console.log("sourceBranchName: " + buildReason);
+        console.log("buildReason: " + buildReason);
+        console.log("buildId: " + buildId);
         console.log("sourceBranchName: " + sourceBranchName);
         console.log("prNumber: " + prNumber);
         console.log("prNumberInput: " + prNumberInput);
@@ -20,8 +21,8 @@ async function run() {
 
         // Shorten the commit id
         var shortCommitId = gitCommitId;
-        if(gitCommitId.length>6)
-            shortCommitId = gitCommitId.substring(0,6);
+        if(gitCommitId.length>7)
+            shortCommitId = gitCommitId.substring(0,7);
         
         // If it is a pull request
         if(prNumber != null) {

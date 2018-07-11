@@ -9,7 +9,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 3
+        "Patch": 4
     },
     "instanceNameFormat": "Update build number",
     "groups": [
@@ -24,37 +24,42 @@
             "name": "buildReason",
             "type": "string",
             "label": "Build reason",
-            "defaultValue": "$(Build.BuildReason)",
-            "required": true
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "`$(Build.BuildReason)`"
         },
         {
             "name": "sourceBranchName",
             "type": "string",
             "label": "Source branch name",
-            "defaultValue": "$(Build.SourceBranchName)",
-            "required": true
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "`$(Build.SourceBranchName)`"
         },
         {
             "name": "gitCommitId",
             "type": "string",
             "label": "Commit ID/SHA",
-            "defaultValue": "$(Build.SourceVersion)",
-            "required": true
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "`$(Build.SourceVersion)`"
+
         },
         {
             "name": "buildId",
             "type": "string",
             "label": "Build ID",
-            "defaultValue": "$(Build.BuildId)",
-            "required": true
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "`$(Build.BuildId)`"
         },
         {
             "name": "prNumber",
             "type": "string",
             "label": "Pull Request ID",
-            "defaultValue": "$(System.PullRequest.PullRequestId)",
+            "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Use `System.PullRequest.PullRequestNumber` in GitHub and `System.PullRequest.PullRequestId` in VSTS Git"
+            "helpMarkDown": "Use `$(System.PullRequest.PullRequestNumber)` in GitHub and `$(System.PullRequest.PullRequestId)` in VSTS Git"
         }
     ],
     "execution": {
