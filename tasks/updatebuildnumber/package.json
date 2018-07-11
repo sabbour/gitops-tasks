@@ -4,7 +4,7 @@
   "description": "Updates build number using branch name, commit SHA and build ID.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha out/tests/_suite.js"
   },
   "repository": {
     "type": "git",
