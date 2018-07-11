@@ -3,18 +3,21 @@ import trm = require('vsts-task-lib/toolrunner');
 
 async function run() {
     try {
-        var buildReason = tl.getInput("buildReason",true);
-        var sourceBranchName = tl.getInput("sourceBranchName",true);
-        var gitCommitId = tl.getInput("gitCommitId",true);
-        var buildId = tl.getInput("buildId",true);
-        var prNumberInput = tl.getInput("prNumber",true);
-        var prNumber = getPullRequestId();
+        var buildReason = tl.getVariable("Build.BuildReason");
+        var sourceBranchName = tl.getVariable("Build.SourceBranchName");
+        var gitCommitId = tl.getVariable("Build.SourceVersion");
+        var buildId = tl.getVariable("Build.BuildId");
+        var prNumber = tl.getVariable("System.PullRequest.PullRequestId");
+        if(prNumber == undefined)
+            prNumber = tl.getVariable("System.PullRequest.PullRequestNumber"); 
+            
+        //var prNumber = getPullRequestId();
 
         console.log("buildReason: " + buildReason);
         console.log("buildId: " + buildId);
         console.log("sourceBranchName: " + sourceBranchName);
+        console.log("gitCommitId: " + gitCommitId);
         console.log("prNumber: " + prNumber);
-        console.log("prNumberInput: " + prNumberInput);
 
 
         var buildTag = "";
