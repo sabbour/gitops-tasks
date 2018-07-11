@@ -24,7 +24,7 @@ async function run() {
         var prNumber: number = Number(tl.getVariable("System.PullRequest.PullRequestId"));
         var accessToken2 = getBearerToken();
 
-        var creds = web.getBearerHandler(accessToken);
+        var creds = web.getBearerHandler(accessToken2);
         var connection = new WebApi(accountUri, creds);
         gitClient = connection.getGitApi();
         await addPullRequestComment(repoId,prNumber,comment);
