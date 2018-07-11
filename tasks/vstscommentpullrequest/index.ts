@@ -74,17 +74,15 @@ function getBearerToken() {
 }
 
 async function addPullRequestComment(repoId: string, prId: number, content: string) {
-    console.log("addPullRequestComment repo" + repoId + " pr: " + prId + " content: " + content);
     var thread = createThread(content);
     await gitClient.createThread(thread,repoId,prId);
 }
 
 function createComment(content: string): gitInterfaces.Comment[] {
     let comment = {
-        // PRCA messages apear as single comments
         parentCommentId: 0,
         content: content,
-        commentType: gitInterfaces.CommentType.Text
+        commentType: gitInterfaces.CommentType.System
     } as gitInterfaces.Comment;
 
     return [comment];
