@@ -3,14 +3,14 @@ import trm = require('vsts-task-lib/toolrunner');
 
 async function run() {
     try {
-        var buildReason = tl.getVariable("Build.BuildReason");
+        var buildReason = tl.getVariable("Build.Reason");
         var sourceBranchName = tl.getVariable("Build.SourceBranchName");
         var gitCommitId = tl.getVariable("Build.SourceVersion");
         var buildId = tl.getVariable("Build.BuildId");
         var prNumber = tl.getVariable("System.PullRequest.PullRequestId");
         if(prNumber == undefined)
             prNumber = tl.getVariable("System.PullRequest.PullRequestNumber"); 
-            
+
         //var prNumber = getPullRequestId();
 
         console.log("buildReason: " + buildReason);
@@ -28,7 +28,7 @@ async function run() {
             shortCommitId = gitCommitId.substring(0,7);
         
         // If it is a pull request
-        if(prNumber != null) {
+        if(buildReason == "PullRequest" && prNumber != null) {
             buildTag = "pr-" + prNumber + "-" + shortCommitId + "-" + buildId;
         }
         else {
