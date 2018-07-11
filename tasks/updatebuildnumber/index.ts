@@ -46,28 +46,13 @@ async function run() {
 }
 function getTargetBranchName() {
     let targetBranch: string = tl.getVariable('System.PullRequest.TargetBranch');
-    if (!targetBranch.startsWith('refs/heads/')) {
+    
+    if(targetBranch == undefined)
         return null;
-    }
+    if (!targetBranch.startsWith('refs/heads/'))
+        return null;
 
     return targetBranch.replace('refs/heads/', '');
-}
-
-function getPullRequestId() {
-    let sourceBranch: string = tl.getVariable('Build.SourceBranch');
-    if (!sourceBranch.startsWith('refs/pull/')) {
-        return null;
-    }
-
-    var pullRequestId: number = Number.parseInt(sourceBranch.replace('refs/pull/', ''));
-
-    if (isNaN(pullRequestId)) {
-        console.log(`Expected pull request ID to be a number. Attempted to parse: ${sourceBranch.replace('refs/pull/', '')}`);
-        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
-        process.exit(1);
-    }
-
-    return pullRequestId;
 }
 
 run();
