@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
-    "vsts-task-lib": "^2.6.0"
+    "vsts-task-lib": "^2.6.0",
+    "mocha-junit-reporter": "^1.17.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.4",
