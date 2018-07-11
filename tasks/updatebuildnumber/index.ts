@@ -10,8 +10,10 @@ async function run() {
         var prNumberInput = tl.getInput("prNumber",true);
         var prNumber = getPullRequestId();
 
-        console.log("PR Number method: " + prNumber);
-        console.log("PR Number input: " + prNumberInput);
+        console.log("sourceBranchName: " + buildReason);
+        console.log("sourceBranchName: " + sourceBranchName);
+        console.log("prNumber: " + prNumber);
+        console.log("prNumberInput: " + prNumberInput);
 
 
         var buildTag = "";
