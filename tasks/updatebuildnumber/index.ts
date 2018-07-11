@@ -5,6 +5,7 @@ async function run() {
     try {
         var buildReason = tl.getVariable("Build.Reason");
         var sourceBranchName = tl.getVariable("Build.SourceBranchName");
+        var targetePullRequestBranchName = getTargetBranchName();
         var gitCommitId = tl.getVariable("Build.SourceVersion");
         var buildId = tl.getVariable("Build.BuildId");
         var prNumber = tl.getVariable("System.PullRequest.PullRequestId");
@@ -16,6 +17,7 @@ async function run() {
         console.log("buildReason: " + buildReason);
         console.log("buildId: " + buildId);
         console.log("sourceBranchName: " + sourceBranchName);
+        console.log("targetePullRequestBranchName: " + targetePullRequestBranchName);
         console.log("gitCommitId: " + gitCommitId);
         console.log("prNumber: " + prNumber);
 
@@ -24,12 +26,12 @@ async function run() {
 
         // Shorten the commit id
         var shortCommitId = gitCommitId;
-        if(gitCommitId.length>7)
-            shortCommitId = gitCommitId.substring(0,7);
+        if(gitCommitId.length>3)
+            shortCommitId = gitCommitId.substring(0,2);
         
         // If it is a pull request
         if(buildReason == "PullRequest" && prNumber != null) {
-            buildTag = "pr-" + prNumber + "-" + shortCommitId + "-" + buildId;
+            buildTag = targetePullRequestBranchName+"-pr-" + prNumber + "-" + shortCommitId + "-" + buildId;
         }
         else {
             buildTag = sourceBranchName + "-" + shortCommitId + "-" + buildId;
@@ -41,6 +43,14 @@ async function run() {
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
+}
+function getTargetBranchName() {
+    let targetBranch: string = tl.getVariable('System.PullRequest.TargetBranch');
+    if (!targetBranch.startsWith('refs/heads/')) {
+        return null;
+    }
+
+    return targetBranch.replace('refs/heads/', '');
 }
 
 function getPullRequestId() {
