@@ -12,7 +12,7 @@ var gitClient: IGitApi;
 
 async function run() {
     // If not running on a Pull Request, stop
-    //stopOnNonPrBuild();
+    stopOnNonPrBuild();
 
     try {
         var comment: string = tl.getInput("comment",true);
