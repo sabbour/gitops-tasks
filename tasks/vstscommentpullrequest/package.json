@@ -1,10 +1,10 @@
 {
-  "name": "updatebuildnumber",
+  "name": "vstscommentpullrequest",
   "version": "0.1.0",
-  "description": "Updates build number using branch name, commit SHA and build ID.",
+  "description": "Comments on a Pull Request (VSTS Git)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha out/tests/_suite.js"
+    "test": ""
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
-    "vsts-task-lib": "^2.6.0"
+    "vsts-task-lib": "^2.6.0",
+    "vso-node-api": "^5.0.5"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.4",

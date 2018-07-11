@@ -1,0 +1,36 @@
+{
+    "id": "ab60e049-e5d1-4dcf-a777-06a4adf858d6",
+    "name": "vstscommentpullrequest",
+    "friendlyName": "GitOps - Comment on a Pull Request (VSTS Git)",
+    "description": "Writes a new comment on a Pull Request",
+    "helpMarkDown": "",
+    "category": "Build",
+    "author": "Ahmed Sabbour",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Comment on pull request",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "comment",
+            "type": "string",
+            "label": "Comment",
+            "defaultValue": "",
+            "required": true
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "out/index.js"
+        }
+    }
+}
