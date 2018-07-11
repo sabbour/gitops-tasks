@@ -21,7 +21,7 @@ async function run() {
         var projectName: string = tl.getVariable("System.TeamProject");
         var repoId: string = tl.getVariable("Build.Repository.Id");
         var buildNumber: string = tl.getVariable("Build.BuildNumber");
-        var prNumber: number = Number(tl.getVariable("System.PullRequest.PullRequestId"));
+        var prNumber: number = getPullRequestId();
         var accessToken2 = getBearerToken();
 
         var creds = web.getBearerHandler(accessToken2);
@@ -43,6 +43,20 @@ function stopOnNonPrBuild() {
         console.log("Not triggered by a Pull Request, skipping.");
         process.exit();
     }
+}
+
+function getPullRequestId() {
+    let sourceBranch: string = tl.getVariable('Build.SourceBranch');
+    var pullRequestId: number = Number.parseInt(sourceBranch.replace('refs/pull/', ''));
+
+    if (isNaN(pullRequestId)) {
+        console.log(`Expected pull request ID to be a number. Attempted to parse: ${sourceBranch.replace('refs/pull/', '')}`);
+        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
+        process.exit(1);
+    }
+
+    return pullRequestId;
+
 }
 
 function getBearerToken() {
