@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 6
+        "Patch": 7
     },
     "instanceNameFormat": "Comment on pull request",
     "groups": [
@@ -38,7 +38,7 @@
             "name": "singletonComment",
             "type": "boolean",
             "label": "Overwrites existing comments with the same descriptor",
-            "defaultValue": "GitOps.PreviewPRComment",
+            "defaultValue": true,
             "required": true
         }
     ],
