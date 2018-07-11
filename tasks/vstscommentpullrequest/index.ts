@@ -17,17 +17,20 @@ async function run() {
     try {
         var comment: string = tl.getInput("comment",true);
         var accountUri: string = tl.getVariable("System.TeamFoundationCollectionUri");
-        var accessToken: string = tl.getVariable("System.AccessToken");
-        var projectName: string = tl.getVariable("System.TeamProject");
         var repoId: string = tl.getVariable("Build.Repository.Id");
-        var buildNumber: string = tl.getVariable("Build.BuildNumber");
+        var commentDescriptor: string = tl.getInput("commentDescriptor",true);
+        var singletonComment: boolean = tl.getBoolInput("singletonComment", true);
         var prNumber: number = getPullRequestId();
         var accessToken2 = getBearerToken();
 
         var creds = web.getBearerHandler(accessToken2);
         var connection = new WebApi(accountUri, creds);
         gitClient = connection.getGitApi();
-        await addPullRequestComment(repoId,prNumber,comment);
+
+        if(singletonComment) {
+            await deleteExistingPullRequestComment(repoId,prNumber,commentDescriptor);
+        }
+        await addPullRequestComment(repoId,prNumber,commentDescriptor,comment);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
@@ -73,8 +76,31 @@ function getBearerToken() {
     return auth.parameters['AccessToken'];
 }
 
-async function addPullRequestComment(repoId: string, prId: number, content: string) {
-    var thread = createThread(content);
+async function deleteExistingPullRequestComment(repoId: string, prId: number, commentDescriptor: string) {
+    let threads = await gitClient.getThreads(repoId, prId);
+    let descriptorThreads = threads.filter(th => {
+        return !th.isDeleted && // a thread is marked as "deleted" if all its comments are deleted
+            th.properties &&
+            th.properties[commentDescriptor] &&
+            th.properties[commentDescriptor].$value === 1; // $ is not a mistake here
+    });
+    let deletePromises: Promise<void>[] = [];
+    descriptorThreads.forEach(thread => {
+        let visibleComments = thread.comments.filter(c => !c.isDeleted);
+
+        if (visibleComments.length > 0) {
+            visibleComments.forEach(c => {
+                let deletePromise = gitClient.deleteComment(repoId, prId, thread.id, c.id);
+                deletePromises.push(deletePromise);
+            });
+        }
+    });
+
+    await Promise.all(deletePromises);
+}
+
+async function addPullRequestComment(repoId: string, prId: number, commentDescriptor: string, content: string) {
+    var thread = createThread(content, commentDescriptor);
     await gitClient.createThread(thread,repoId,prId);
 }
 
@@ -88,20 +114,20 @@ function createComment(content: string): gitInterfaces.Comment[] {
     return [comment];
 }
 
-function createThread(content: string): gitInterfaces.GitPullRequestCommentThread {
+function createThread(content: string, commentDescriptor: string): gitInterfaces.GitPullRequestCommentThread {
     let thread = {
         comments: createComment(content),
         isDeleted: false,
-        properties: getGitOpsPRCommentProperty(),
-        status: gitInterfaces.CommentThreadStatus.Active
+        properties: getGitOpsPRCommentProperty(commentDescriptor),
+        status: gitInterfaces.CommentThreadStatus.Closed
     } as gitInterfaces.GitPullRequestCommentThread;
 
     return thread;
 }
 
-function getGitOpsPRCommentProperty() {
+function getGitOpsPRCommentProperty(commentDescriptor: string) {
     let properties: any = {};
-    properties["GitOps.PreviewPRComment"] = {
+    properties[commentDescriptor] = {
         type: 'System.Int32',
         value: 1
     };

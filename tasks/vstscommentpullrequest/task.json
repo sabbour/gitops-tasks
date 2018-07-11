@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 4
+        "Patch": 5
     },
     "instanceNameFormat": "Comment on pull request",
     "groups": [
@@ -25,6 +25,20 @@
             "type": "string",
             "label": "Comment",
             "defaultValue": "",
+            "required": true
+        },
+        {
+            "name": "commentDescriptor",
+            "type": "string",
+            "label": "Comment descriptor property",
+            "defaultValue": "GitOps.PreviewPRComment",
+            "required": true
+        },
+        {
+            "name": "singletonComment",
+            "type": "boolean",
+            "label": "Overwrites existing comments with the same descriptor",
+            "defaultValue": "GitOps.PreviewPRComment",
             "required": true
         }
     ],
