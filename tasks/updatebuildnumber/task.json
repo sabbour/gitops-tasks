@@ -2,14 +2,14 @@
     "id": "a6924d7c-f489-45d1-9f21-b95618c2f1cd",
     "name": "updatebuildnumber",
     "friendlyName": "GitOps - Update Build Number",
-    "description": "Updates build number using branch name, commit SHA and build ID",
+    "description": "Updates build number using branch name and build ID",
     "helpMarkDown": "",
     "category": "Build",
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 1,
-        "Minor": 1,
-        "Patch": 6
+        "Minor": 2,
+        "Patch": 0
     },
     "instanceNameFormat": "Update build number",
     "groups": [
