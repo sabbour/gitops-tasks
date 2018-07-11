@@ -9,6 +9,12 @@ import * as gitInterfaces from 'vso-node-api/interfaces/GitInterfaces';
 import { GitPullRequestCommentStatus } from 'vso-node-api/interfaces/TfvcInterfaces';
 
 var gitClient: IGitApi;
+var repoId: string;
+var prNumber: number;
+var commentDescriptor: string;
+var singletonComment: boolean;
+var latestIterationFetched: boolean;
+var latestIterationId: number;
 
 async function run() {
     // If not running on a Pull Request, stop
@@ -17,20 +23,21 @@ async function run() {
     try {
         var comment: string = tl.getInput("comment",true);
         var accountUri: string = tl.getVariable("System.TeamFoundationCollectionUri");
-        var repoId: string = tl.getVariable("Build.Repository.Id");
-        var commentDescriptor: string = tl.getInput("commentDescriptor",true);
-        var singletonComment: boolean = tl.getBoolInput("singletonComment", true);
-        var prNumber: number = getPullRequestId();
-        var accessToken2 = getBearerToken();
+        var accessToken = getBearerToken();
 
-        var creds = web.getBearerHandler(accessToken2);
+        repoId = tl.getVariable("Build.Repository.Id");
+        commentDescriptor = tl.getInput("commentDescriptor",true);
+        singletonComment = tl.getBoolInput("singletonComment", true);
+        prNumber = getPullRequestId();
+
+        var creds = web.getBearerHandler(accessToken);
         var connection = new WebApi(accountUri, creds);
         gitClient = connection.getGitApi();
 
         if(singletonComment) {
-            await deleteExistingPullRequestComment(repoId,prNumber,commentDescriptor);
+            await deleteExistingPullRequestComment();
         }
-        await addPullRequestComment(repoId,prNumber,commentDescriptor,comment);
+        await addPullRequestComment(comment);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
@@ -62,6 +69,16 @@ function getPullRequestId() {
 
 }
 
+async function fetchLatestIterationId(): Promise<void> {
+    if (!latestIterationFetched) {
+        let iterations: gitInterfaces.GitPullRequestIteration[]
+            = await gitClient.getPullRequestIterations(repoId, prNumber);
+
+        latestIterationId = Math.max.apply(Math, iterations.map(i => i.id));
+        latestIterationFetched = true;
+    }
+}
+
 function getBearerToken() {
 
     tl.debug('Getting the agent bearer token');
@@ -76,8 +93,9 @@ function getBearerToken() {
     return auth.parameters['AccessToken'];
 }
 
-async function deleteExistingPullRequestComment(repoId: string, prId: number, commentDescriptor: string) {
-    let threads = await gitClient.getThreads(repoId, prId);
+async function deleteExistingPullRequestComment(): Promise<void> {
+    await fetchLatestIterationId();
+    let threads = await gitClient.getThreads(repoId, prNumber, undefined, latestIterationId);
     let descriptorThreads = threads.filter(th => {
         return !th.isDeleted && // a thread is marked as "deleted" if all its comments are deleted
             th.properties &&
@@ -90,7 +108,7 @@ async function deleteExistingPullRequestComment(repoId: string, prId: number, co
 
         if (visibleComments.length > 0) {
             visibleComments.forEach(c => {
-                let deletePromise = gitClient.deleteComment(repoId, prId, thread.id, c.id);
+                let deletePromise = gitClient.deleteComment(repoId, prNumber, thread.id, c.id);
                 deletePromises.push(deletePromise);
             });
         }
@@ -99,9 +117,10 @@ async function deleteExistingPullRequestComment(repoId: string, prId: number, co
     await Promise.all(deletePromises);
 }
 
-async function addPullRequestComment(repoId: string, prId: number, commentDescriptor: string, content: string) {
+async function addPullRequestComment(content: string): Promise<void> {
+    await fetchLatestIterationId();
     var thread = createThread(content, commentDescriptor);
-    await gitClient.createThread(thread,repoId,prId);
+    await gitClient.createThread(thread,repoId,prNumber);
 }
 
 function createComment(content: string): gitInterfaces.Comment[] {
@@ -119,10 +138,28 @@ function createThread(content: string, commentDescriptor: string): gitInterfaces
         comments: createComment(content),
         isDeleted: false,
         properties: getGitOpsPRCommentProperty(commentDescriptor),
-        status: gitInterfaces.CommentThreadStatus.Closed
+        status: gitInterfaces.CommentThreadStatus.Closed,
+        pullRequestThreadContext: createCommentContext()
     } as gitInterfaces.GitPullRequestCommentThread;
 
     return thread;
+}
+
+function createCommentContext(): gitInterfaces.GitPullRequestCommentThreadContext {
+    return {
+        // let the server compute the changeTrackingId, which is used to reposition comments in future iterations
+        changeTrackingId: 0,
+
+        // create the comment as if looking at the current iteration compared to the first 
+        iterationContext:
+        {
+            firstComparingIteration: 1,
+            secondComparingIteration: latestIterationId
+        },
+        trackingCriteria: {
+
+        } as gitInterfaces.CommentTrackingCriteria
+    };
 }
 
 function getGitOpsPRCommentProperty(commentDescriptor: string) {
