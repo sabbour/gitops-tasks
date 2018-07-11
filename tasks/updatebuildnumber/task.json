@@ -59,7 +59,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "index.js"
+            "target": "scripts/index.js"
         }
     }
 }
