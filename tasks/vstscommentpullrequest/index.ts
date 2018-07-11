@@ -24,11 +24,7 @@ async function run() {
         var prNumber: number = Number(tl.getVariable("System.PullRequest.PullRequestId"));
         var accessToken2 = getBearerToken();
 
-        console.log("accessToken: " + accessToken);
-        console.log("accessToken2: " + accessToken2);
-
         var creds = web.getBearerHandler(accessToken);
-        //var creds2 = web.getBearerHandler(accessToken2);
         var connection = new WebApi(accountUri, creds);
         gitClient = connection.getGitApi();
         await addPullRequestComment(repoId,prNumber,comment);
@@ -64,6 +60,7 @@ function getBearerToken() {
 }
 
 async function addPullRequestComment(repoId: string, prId: number, content: string) {
+    console.log("addPullRequestComment repo" + repoId + " pr: " + prId + " content: " + content);
     var thread = createThread(content);
     await gitClient.createThread(thread,repoId,prId);
 }
