@@ -1,0 +1,50 @@
+{
+    "id": "2e308060-0f2f-48ac-a5ba-af665041849b",
+    "name": "outputenvironmentns",
+    "friendlyName": "GitOps - Generate Environment K8s namespace",
+    "description": "Generates a K8s namespace name for the release environment, based on branch, whether this is a pull request, and desired service name.",
+    "helpMarkDown": "",
+    "category": "Build",
+    "author": "Ahmed Sabbour",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Generate environment namespace",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "servicename",
+            "type": "string",
+            "label": "Service name",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Name of the service. Will be used in `<servicename>-<env>-<build number>`"
+        },
+        {
+            "name": "environment",
+            "type": "string",
+            "label": "Environment suffix",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>`. If blank, then the resulting hostname will be in the form of `<servicename>-<build number>.<clustersuffix>`"
+
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "out/index.js"
+        }
+    },
+    "outputvariables": [{
+        "name" : "namespace",
+        "description" : "The namespace appropriate to use with this release."
+    }]
+}
