@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "gitops-extension",
     "name": "GitOps with Kubernetes tools",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "publisher": "asabbour",
     "targets": [
         {
@@ -23,6 +23,9 @@
         },
         {
             "path": "vstscommentpullrequest"
+        },
+        {
+            "path": "outputenvironmenthost"
         }
     ],
     "contributions": [
@@ -48,6 +51,18 @@
             "properties": {
                 "//Name of the task. This must match the folder name of the corresponding self-contained build task definition.": "",
                 "name": "vstscommentpullrequest"
+            }
+        },
+        {
+            "//Identifier of the contribution. Must be unique within the extension. Does not need to match the name of the build task, but typically the build task name is included in the ID of the contribution.": "",
+            "id": "outputenvironmenthost-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "//Name of the task. This must match the folder name of the corresponding self-contained build task definition.": "",
+                "name": "outputenvironmenthost"
             }
         }
     ]
