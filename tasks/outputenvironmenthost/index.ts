@@ -4,7 +4,7 @@ import trm = require('vsts-task-lib/toolrunner');
 async function run() {
     try {
         var serviceName: string = tl.getInput("servicename",true);
-        var clusterSuffix: string = tl.getInput("clusterSuffix",true);
+        var clusterSuffix: string = tl.getInput("clustersuffix",true);
         var buildNumber = tl.getVariable("Build.BuildNumber");
         var buildReason = tl.getVariable("Build.Reason");
         var sourceBranchName = tl.getVariable("Build.SourceBranchName");
