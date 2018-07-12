@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 4
+        "Patch": 5
     },
     "instanceNameFormat": "Output environment hostname",
     "groups": [
@@ -38,7 +38,7 @@
 
         },
         {
-            "name": "env",
+            "name": "environment",
             "type": "string",
             "label": "Environment suffix",
             "defaultValue": "",
