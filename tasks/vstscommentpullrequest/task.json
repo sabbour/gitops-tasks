@@ -8,8 +8,8 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 0,
-        "Minor": 2,
-        "Patch": 9
+        "Minor": 3,
+        "Patch": 0
     },
     "instanceNameFormat": "Comment on pull request",
     "groups": [
@@ -25,6 +25,22 @@
             "type": "string",
             "label": "Comment",
             "defaultValue": "",
+            "required": true
+        },
+        {
+            "name": "status",
+            "type": "pickList",
+            "label": "Comment status",
+            "defaultValue": "Active",
+            "options": {
+                "Active": "Active",
+                "ByDesign": "ByDesign",
+                "Fixed": "Fixed",
+                "Pending": "Pending",
+                "Closed": "Closed",
+                "WontFix": "WontFix",
+                "Unknown": "Unknown"
+            },
             "required": true
         },
         {

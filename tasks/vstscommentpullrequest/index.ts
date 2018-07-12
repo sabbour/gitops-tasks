@@ -22,6 +22,7 @@ async function run() {
 
     try {
         var comment: string = tl.getInput("comment",true);
+        var status: string = tl.getInput("status",true);
         var accountUri: string = tl.getVariable("System.TeamFoundationCollectionUri");
         var accessToken = getBearerToken();
 
@@ -37,7 +38,7 @@ async function run() {
         if(singletonComment) {
             await deleteExistingPullRequestComment();
         }
-        await addPullRequestComment(comment);
+        await addPullRequestComment(comment,status);
         console.log("Pull request comment: " + comment);
     }
     catch (err) {
@@ -118,9 +119,9 @@ async function deleteExistingPullRequestComment(): Promise<void> {
     await Promise.all(deletePromises);
 }
 
-async function addPullRequestComment(content: string): Promise<void> {
+async function addPullRequestComment(content: string, status: string): Promise<void> {
     await fetchLatestIterationId();
-    var thread = createThread(content, commentDescriptor);
+    var thread = createThread(content, commentDescriptor, status);
     await gitClient.createThread(thread,repoId,prNumber);
 }
 
@@ -134,12 +135,39 @@ function createComment(content: string): gitInterfaces.Comment[] {
     return [comment];
 }
 
-function createThread(content: string, commentDescriptor: string): gitInterfaces.GitPullRequestCommentThread {
+function createThread(content: string, commentDescriptor: string, status: string): gitInterfaces.GitPullRequestCommentThread {
+    var commentThreadStatus;
+    switch(status) {
+        case "Active":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Active;
+        break;
+        case "ByDesign":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.ByDesign;
+        break;
+        case "Fixed":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Fixed;
+        break;
+        case "Pending":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Pending;
+        break;
+        case "Closed":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Closed;
+        break;
+        case "WontFix":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.WontFix;
+        break;
+        case "Unknown":
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Unknown;
+        break;
+        default:
+        commentThreadStatus = gitInterfaces.CommentThreadStatus.Unknown;
+    }
+
     let thread = {
         comments: createComment(content),
         isDeleted: false,
         properties: getGitOpsPRCommentProperty(commentDescriptor),
-        status: gitInterfaces.CommentThreadStatus.Closed,
+        status: commentThreadStatus,
         pullRequestThreadContext: createCommentContext()
     } as gitInterfaces.GitPullRequestCommentThread;
 
