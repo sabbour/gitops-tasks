@@ -8,7 +8,7 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 0,
-        "Minor": 2,
+        "Minor": 3,
         "Patch": 5
     },
     "instanceNameFormat": "Output environment hostname",
@@ -42,8 +42,8 @@
             "type": "string",
             "label": "Environment suffix",
             "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>.<clustersuffix>`"
+            "required": false,
+            "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>.<clustersuffix>`. If blank, then the resulting hostname will be in the form of `<servicename>-<build number>.<clustersuffix>`"
 
         }
     ],

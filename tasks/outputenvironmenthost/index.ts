@@ -13,7 +13,11 @@ async function run() {
         console.log("buildNumber: " + buildNumber);
         console.log("clusterSuffix: " + clusterSuffix);
         
-        var hostname = serviceName + "-" + env + "-" + buildNumber + "." + clusterSuffix;
+        var hostname = "";
+        if(env != undefined && env != null && env.trim() != "")
+            hostname = serviceName + "-" + env + "-" + buildNumber + "." + clusterSuffix;
+        else
+            hostname = serviceName + "-" + buildNumber + "." + clusterSuffix;
 
         // Set it
         console.log("Generated hostname: " + hostname.toLowerCase());
