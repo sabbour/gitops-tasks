@@ -8,7 +8,7 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 0,
-        "Minor": 1,
+        "Minor": 2,
         "Patch": 4
     },
     "instanceNameFormat": "Output environment hostname",
@@ -25,14 +25,26 @@
             "type": "string",
             "label": "Service name",
             "defaultValue": "",
-            "required": true
+            "required": true,
+            "helpMarkDown": "Name of the service. Will be used in `<servicename>-<env>-<build number>.<clustersuffix>`"
         },
         {
             "name": "clustersuffix",
             "type": "string",
             "label": "Cluster suffix",
             "defaultValue": "",
-            "required": true
+            "required": true,
+            "helpMarkDown": "For AKS, HTTP Application Routing. Usually in the form of `xxxxx.region.aksapps.io`"
+
+        },
+        {
+            "name": "env",
+            "type": "string",
+            "label": "Environment suffix",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>.<clustersuffix>`"
+
         }
     ],
     "execution": {
