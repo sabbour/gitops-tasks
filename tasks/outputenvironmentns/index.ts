@@ -4,7 +4,7 @@ import trm = require('vsts-task-lib/toolrunner');
 async function run() {
     try {
         var serviceName: string = tl.getInput("servicename",true);
-        var env: string = tl.getInput("environment",true);
+        var env: string = tl.getInput("environment");
         var buildNumber = tl.getVariable("Build.BuildNumber");
 
         console.log("serviceName: " + serviceName);

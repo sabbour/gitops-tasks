@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Generate environment namespace",
     "groups": [
@@ -35,7 +35,6 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>`. If blank, then the resulting hostname will be in the form of `<servicename>-<build number>.<clustersuffix>`"
-
         }
     ],
     "execution": {
