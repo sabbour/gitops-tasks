@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Generate environment namespace",
     "groups": [
@@ -39,7 +39,7 @@
         {
             "name": "includeBuildNumber",
             "type": "boolean",
-            "label": "Include build number in namespace.",
+            "label": "Include build number in namespace",
             "defaultValue": false,
             "helpMarkDown": " Not recommended except for Pull Request/Preview environments.",
             "required": true
