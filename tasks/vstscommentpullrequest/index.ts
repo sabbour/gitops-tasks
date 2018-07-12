@@ -38,6 +38,7 @@ async function run() {
             await deleteExistingPullRequestComment();
         }
         await addPullRequestComment(comment);
+        console.log("Pull request comment: " + comment);
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);

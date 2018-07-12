@@ -27,6 +27,7 @@ async function run() {
         }
 
         // Set it
+        console.log("Generated hostname: " + hostname.toLowerCase());
         console.log("##vso[task.setvariable variable=environmenthostname;isOutput=true;]"+hostname.toLowerCase());
     }
     catch (err) {
