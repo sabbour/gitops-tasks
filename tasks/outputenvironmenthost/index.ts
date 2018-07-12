@@ -8,12 +8,15 @@ async function run() {
         var buildNumber = tl.getVariable("Build.BuildNumber");
         var buildReason = tl.getVariable("Build.Reason");
         var sourceBranchName = tl.getVariable("Build.SourceBranchName");
-        var targetePullRequestBranchName = getTargetBranchName();
 
         console.log("serviceName: " + serviceName);
+        console.log("buildReason: " + buildReason);
         console.log("buildNumber: " + buildNumber);
         console.log("sourceBranchName: " + sourceBranchName);
-        console.log("targetePullRequestBranchName: " + targetePullRequestBranchName);
+        console.log("System.PullRequest.PullRequestId: " + tl.getVariable("System.PullRequest.PullRequestId"));
+        console.log("System.PullRequest.PullRequestNumber: " + tl.getVariable("System.PullRequest.PullRequestNumber"));
+        console.log("System.PullRequest.SourceBranch: " + tl.getVariable("System.PullRequest.SourceBranch"));
+        console.log("System.PullRequest.TargetBranch: " + tl.getVariable("System.PullRequest.TargetBranch"));
 
         var hostname = "";
 
@@ -33,16 +36,6 @@ async function run() {
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
-}
-function getTargetBranchName() {
-    let targetBranch: string = tl.getVariable('System.PullRequest.TargetBranch');
-    
-    if(targetBranch == undefined)
-        return null;
-    if (!targetBranch.startsWith('refs/heads/'))
-        return null;
-
-    return targetBranch.replace('refs/heads/', '');
 }
 
 run();
