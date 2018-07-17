@@ -19,6 +19,9 @@ async function run() {
         var accessToken = getBearerToken();
         repoId = tl.getVariable("Build.Repository.Id");
         prNumber = getPullRequestId();
+        var creds = web.getBearerHandler(accessToken);
+        var connection = new WebApi(accountUri, creds);
+        gitClient = connection.getGitApi();
 
         var pr;
         console.log("prNumber: " + prNumber);
