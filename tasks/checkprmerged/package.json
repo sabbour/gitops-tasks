@@ -1,11 +1,8 @@
 {
-  "name": "vstscommentpullrequest",
+  "name": "checkprmerged",
   "version": "0.1.0",
-  "description": "Comments on a Pull Request (VSTS Git)",
+  "description": "Checks if a Pull Request has been merged/closed.",
   "main": "index.js",
-  "scripts": {
-    "test": ""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sabbour/gitops-tasks.git"
