@@ -40,7 +40,7 @@ async function run() {
         // Set it
         console.log("PR status: " + pr.status);
         console.log("PR mergeStatus: " + pr.mergeStatus);
-        console.log("PR closedBy: " + pr.closedBy);
+        console.log("PR closedBy: " + pr.closedBy.displayName);
         console.log("PR closedDate: " + pr.closedDate);
         console.log("##vso[task.setvariable variable=prstatus;isOutput=true;]"+pr.status);
         console.log("##vso[task.setvariable variable=mergestatus;isOutput=true;]"+pr.mergeStatus);
