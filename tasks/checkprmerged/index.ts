@@ -55,7 +55,7 @@ function stopOnNonPrBuild() {
 
     tl.debug('Checking if this is a PR build');
     var sourceBranch: string = tl.getVariable('Build.SourceBranch');
-    if (!sourceBranch.startsWith('refs/pull/')) {
+    if (sourceBranch!=undefined && !sourceBranch.startsWith('refs/pull/')) {
         // ="Skipping pull request commenting - this build was not triggered by a pull request."
         console.log("Not triggered by a Pull Request, skipping.");
         process.exit();
@@ -64,6 +64,12 @@ function stopOnNonPrBuild() {
 
 function getPullRequestId() {
     let sourceBranch: string = tl.getVariable('Build.SourceBranch');
+    if(sourceBranch==undefined) {
+        console.log(`Expected pull request ID to be defined.`);
+        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
+        process.exit(1);
+    }
+
     var pullRequestId: number = Number.parseInt(sourceBranch.replace('refs/pull/', ''));
 
     if (isNaN(pullRequestId)) {
