@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "gitops-extension",
     "name": "GitOps with Kubernetes tools",
-    "version": "0.10.1",
+    "version": "0.10.2",
     "publisher": "asabbour",
     "targets": [
         {
