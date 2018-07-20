@@ -43,8 +43,11 @@ export async function generateNamespace(
   return Promise.resolve(namespace);
 }
 
-export function setVariable(name: string, value: string) {
+export function setBuildVariable(name: string, value: string) {
   console.log("##vso[" + name + "]" + value);
+}
+export function setOutputVariable(name: string, value: string) {
+  console.log("##vso[task.setvariable variable="+name+";isOutput=true;" + value);
 }
 
 export function stopOnNonPrBuild() {
