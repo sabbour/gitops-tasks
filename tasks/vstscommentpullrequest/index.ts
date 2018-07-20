@@ -8,6 +8,8 @@ import { IGitApi } from 'vso-node-api/GitApi';
 import * as gitInterfaces from 'vso-node-api/interfaces/GitInterfaces';
 import { GitPullRequestCommentStatus } from 'vso-node-api/interfaces/TfvcInterfaces';
 
+import * as gitops from "common-gitops";
+
 var gitClient: IGitApi;
 var repoId: string;
 var prNumber: number;
@@ -18,19 +20,27 @@ var latestIterationId: number;
 
 async function run() {
     // If not running on a Pull Request, stop
-    stopOnNonPrBuild();
+    gitops.stopOnNonPrBuild();
 
     try {
         var comment: string = tl.getInput("comment",true);
         var status: string = tl.getInput("status",true);
         var accountUri: string = tl.getVariable("System.TeamFoundationCollectionUri");
-        var accessToken = getBearerToken();
+        var accessToken = gitops.getBearerToken();
 
         repoId = tl.getVariable("Build.Repository.Id");
         commentDescriptor = tl.getInput("commentDescriptor",true);
         singletonComment = tl.getBoolInput("singletonComment", true);
-        prNumber = getPullRequestId();
 
+        var pullRequestId: string = gitops.getPullRequestId();
+        prNumber = Number.parseInt(pullRequestId);
+
+        if (isNaN(prNumber)) {
+            console.log(`Expected pull request ID to be a number. Attempted to parse: ${pullRequestId}`);
+            tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
+            process.exit(1);
+        }
+        
         var creds = web.getBearerHandler(accessToken);
         var connection = new WebApi(accountUri, creds);
         gitClient = connection.getGitApi();
@@ -46,36 +56,6 @@ async function run() {
     }
 }
 
-function stopOnNonPrBuild() {
-
-    tl.debug('Checking if this is a PR build');
-    var sourceBranch: string = tl.getVariable('Build.SourceBranch');
-    if (sourceBranch!=undefined && !sourceBranch.startsWith('refs/pull/')) {
-        // ="Skipping pull request commenting - this build was not triggered by a pull request."
-        console.log("Not triggered by a Pull Request, skipping.");
-        process.exit();
-    }
-}
-
-function getPullRequestId() {
-    let sourceBranch: string = tl.getVariable('Build.SourceBranch');
-    if(sourceBranch==undefined) {
-        console.log(`Expected pull request ID to be defined.`);
-        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
-        process.exit(1);
-    }
-
-    var pullRequestId: number = Number.parseInt(sourceBranch.replace('refs/pull/', ''));
-
-    if (isNaN(pullRequestId)) {
-        console.log(`Expected pull request ID to be a number. Attempted to parse: ${sourceBranch.replace('refs/pull/', '')}`);
-        tl.setResult(tl.TaskResult.Failed, "Could not retrieve pull request ID from the server.");
-        process.exit(1);
-    }
-
-    return pullRequestId;
-}
-
 async function fetchLatestIterationId(): Promise<void> {
     if (!latestIterationFetched) {
         let iterations: gitInterfaces.GitPullRequestIteration[]
@@ -86,19 +66,6 @@ async function fetchLatestIterationId(): Promise<void> {
     }
 }
 
-function getBearerToken() {
-
-    tl.debug('Getting the agent bearer token');
-
-    // Get authentication from the agent itself
-    var auth = tl.getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
-    if (auth.scheme !== 'OAuth') {
-        // Looks like: "Could not get an authentication token from the build agent."
-        console.log("Could not get an authentication token from the build agent.");
-    }
-
-    return auth.parameters['AccessToken'];
-}
 
 async function deleteExistingPullRequestComment(): Promise<void> {
     await fetchLatestIterationId();
