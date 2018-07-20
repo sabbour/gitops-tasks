@@ -8,8 +8,8 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 0,
-        "Minor": 2,
-        "Patch": 1
+        "Minor": 3,
+        "Patch": 0
     },
     "instanceNameFormat": "Generate environment namespace",
     "groups": [
@@ -47,7 +47,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "out/index.js"
+            "target": "dist/index.js"
         }
     },
     "outputvariables": [{

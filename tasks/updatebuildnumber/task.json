@@ -8,7 +8,7 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 1,
-        "Minor": 3,
+        "Minor": 4,
         "Patch": 0
     },
     "instanceNameFormat": "Update build number",
@@ -24,7 +24,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "out/index.js"
+            "target": "dist/index.js"
         }
     }
 }

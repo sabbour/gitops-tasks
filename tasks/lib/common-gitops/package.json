@@ -1,0 +1,34 @@
+{
+  "name": "common-gitops",
+  "version": "0.1.0",
+  "description": "Common utilities used across the GitOps tasks",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf node_modules dist",
+    "clean-install": "npm run clean && npm install",
+    "clean-build": "npm run clean-install && npm run build",
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sabbour/gitops.git"
+  },
+  "author": "Ahmed Sabbour",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sabbour/gitops/issues"
+  },
+  "homepage": "https://github.com/sabbour/gitops#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "@types/node": "^10.5.2",
+    "@types/q": "^1.5.0"
+  },
+  "dependencies": {
+    "vsts-task-lib": "^2.6.0",
+    "vso-node-api": "^5.0.5"
+  }
+}

@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "gitops-extension",
     "name": "GitOps with Kubernetes tools",
-    "version": "0.10.4",
+    "version": "0.11.0",
     "publisher": "asabbour",
     "targets": [
         {
@@ -11,7 +11,8 @@
     ],    
     "description": "Tools to support a GitOps CI/CD pipeline for Kubernetes.",
     "categories": [
-        "Build and release"
+        "Build and release",
+        "Integrate"
     ],
     "//uncomment 'icons' below to include a custom icon": "",
     "//icons": {
@@ -28,7 +29,7 @@
             "path": "outputenvironmentns"
         },
         {
-            "path": "checkprmerged"
+            "path": "cleanuppreview"
         }
     ],
     "contributions": [
@@ -70,14 +71,14 @@
         },
         {
             "//Identifier of the contribution. Must be unique within the extension. Does not need to match the name of the build task, but typically the build task name is included in the ID of the contribution.": "",
-            "id": "checkprmerged-task",
+            "id": "cleanuppreview-task",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
                 "//Name of the task. This must match the folder name of the corresponding self-contained build task definition.": "",
-                "name": "checkprmerged"
+                "name": "cleanuppreview"
             }
         }
     ]

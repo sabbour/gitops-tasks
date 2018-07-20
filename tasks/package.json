@@ -1,0 +1,20 @@
+{
+  "name": "tasks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf node_modules dist",
+    "clean-install": "npm run clean && npm install",
+    "clean-build": "npm run clean-install && npm run build"
+  },
+  "dependencies": {
+    "common-gitops": "file:../lib/common-gitops",
+    "vss-web-extension-sdk": "^5.134.0"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

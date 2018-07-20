@@ -8,8 +8,8 @@
     "author": "Ahmed Sabbour",
     "version": {
         "Major": 0,
-        "Minor": 3,
-        "Patch": 1
+        "Minor": 4,
+        "Patch": 0
     },
     "instanceNameFormat": "Comment on pull request",
     "groups": [
@@ -60,7 +60,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "out/index.js"
+            "target": "dist/index.js"
         }
     }
 }

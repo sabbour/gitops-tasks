@@ -2,7 +2,13 @@
   "name": "outputenvironmentns",
   "version": "0.1.0",
   "description": "Generates a Kubernetes namespace that could be used for this release.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf node_modules dist",
+    "clean-install": "npm run clean && npm install",
+    "clean-build": "npm run clean-install && npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sabbour/gitops-tasks.git"
@@ -23,6 +29,7 @@
   },
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
+    "common-gitops": "file:../lib/common-gitops",
     "vsts-task-lib": "^2.6.0"
   },
   "devDependencies": {
