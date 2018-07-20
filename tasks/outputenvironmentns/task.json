@@ -35,14 +35,6 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Environment, for example `dev`, `preview`, `preprod`, `prod`. Will be used in `<servicename>-<env>-<build number>`. If blank, then the resulting hostname will be in the form of `<servicename>-<build number>.<clustersuffix>`"
-        },
-        {
-            "name": "includeBuildNumber",
-            "type": "boolean",
-            "label": "Include build number in namespace",
-            "defaultValue": false,
-            "helpMarkDown": " Not recommended except for Pull Request/Preview environments.",
-            "required": true
         }
     ],
     "execution": {

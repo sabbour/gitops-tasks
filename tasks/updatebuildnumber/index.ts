@@ -16,7 +16,7 @@ async function run() {
         console.log("prNumber: " + prNumber);
 
         var buildTag = await gitops.generateBuildNumber(buildReason, buildId, sourceBranchName, prNumber);
-        gitops.setVariable("build.updatebuildnumber",buildTag.toLowerCase());
+        gitops.setBuildVariable("build.updatebuildnumber",buildTag.toLowerCase());
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
