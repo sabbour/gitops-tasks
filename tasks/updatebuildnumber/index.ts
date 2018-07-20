@@ -1,5 +1,5 @@
-import tl = require('vsts-task-lib/task');
-import trm = require('vsts-task-lib/toolrunner');
+import * as tl from "vsts-task-lib/task";
+import * as gitops from "common-gitops";
 
 async function run() {
     try {
@@ -10,27 +10,13 @@ async function run() {
         if(prNumber == undefined)
             prNumber = tl.getVariable("System.PullRequest.PullRequestNumber"); 
 
-        //var prNumber = getPullRequestId();
-
         console.log("buildReason: " + buildReason);
         console.log("buildId: " + buildId);
         console.log("sourceBranchName: " + sourceBranchName);
         console.log("prNumber: " + prNumber);
 
-
-        var buildTag = "";
-
-        // If it is a pull request
-        if(buildReason == "PullRequest" && prNumber != null) {
-            buildTag = "pr-" + prNumber + "-" + buildId;
-        }
-        else {
-            buildTag = sourceBranchName + "-" + buildId;
-        }
-
-        // Set it
-        console.log("buildTag: " + buildTag.toLowerCase());
-        console.log("##vso[build.updatebuildnumber]"+buildTag.toLowerCase());
+        var buildTag = await gitops.generateBuildNumber(buildReason, buildId, sourceBranchName, prNumber);
+        gitops.setVariable("build.updatebuildnumber",buildTag.toLowerCase());
     }
     catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);

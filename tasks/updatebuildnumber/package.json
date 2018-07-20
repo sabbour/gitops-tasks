@@ -2,9 +2,12 @@
   "name": "updatebuildnumber",
   "version": "0.1.0",
   "description": "Updates build number using branch name, commit SHA and build ID.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha out/tests/_suite.js"
+    "build": "tsc",
+    "clean": "rm -rf node_modules dist",
+    "clean-install": "npm run clean && npm install",
+    "clean-build": "npm run clean-install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,7 @@
   },
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
+    "common-gitops": "file:../lib/common-gitops",
     "vsts-task-lib": "^2.6.0"
   },
   "devDependencies": {

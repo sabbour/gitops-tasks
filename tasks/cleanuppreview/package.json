@@ -1,8 +1,14 @@
 {
-  "name": "checkprmerged",
+  "name": "cleanuppreview",
   "version": "0.1.0",
-  "description": "Checks if a Pull Request has been merged/closed.",
-  "main": "index.js",
+  "description": "Cleans up preview environment if this is a merge build",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf node_modules dist",
+    "clean-install": "npm run clean && npm install",
+    "clean-build": "npm run clean-install && npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sabbour/gitops-tasks.git"
@@ -24,7 +30,8 @@
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
     "vsts-task-lib": "^2.6.0",
-    "vso-node-api": "^5.0.5"
+    "vso-node-api": "^5.0.5",
+    "common-gitops": "file:../lib/common-gitops"
   },
   "devDependencies": {
     "@types/node": "^10.5.2",

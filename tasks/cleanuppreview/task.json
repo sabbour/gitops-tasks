@@ -1,5 +1,5 @@
 {
-    "id": "b80a9b82-2380-4b3b-a035-05b3b71a19db",
+    "id": "e2d401bf-61d3-4062-931d-60ff4d87d1a0",
     "name": "checkprmerged",
     "friendlyName": "GitOps - Check if a Pull Request has been merged/closed",
     "description": "Checks if a Pull Request has been merged/closed",
@@ -20,18 +20,10 @@
         }
     ],
     "inputs": [
-        {
-            "name": "wait",
-            "type": "boolean",
-            "label": "Block until the Pull Request is merged/closed",
-            "defaultValue": true,
-            "helpMarkDown": "Use this if you want the agent to block until the PR is merged/closed",
-            "required": true
-        }
     ],
     "execution": {
         "Node": {
-            "target": "out/index.js"
+            "target": "dist/index.js"
         }
     },
     "outputvariables": [{
