@@ -5,9 +5,6 @@ import * as gitops from "common-gitops";
 var prNumber: string;
 
 async function run() {
-    // If not running on a Pull Request, stop
-    gitops.stopOnNonPrBuild();
-
     try {
         var commitId: string = tl.getVariable('Build.SourceVersion');
         console.log("commitId: " + commitId);
