@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/sabbour/gitops-tasks#readme",
   "dependencies": {
-    "vsts-task-lib": "^2.6.0",
+    "common-gitops": "file:../../lib/common-gitops/common-gitops-0.1.0.tgz",
     "vso-node-api": "^5.0.5",
-    "common-gitops": "file:../lib/common-gitops"
+    "vsts-task-lib": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^10.5.2",

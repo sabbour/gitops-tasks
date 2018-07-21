@@ -15,23 +15,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const tl = __importStar(require("vsts-task-lib/task"));
+const tl = require("vsts-task-lib/task");
 const gitops = __importStar(require("common-gitops"));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            var buildReason = tl.getVariable("Build.Reason");
-            var sourceBranchName = tl.getVariable("Build.SourceBranchName");
-            var buildId = tl.getVariable("Build.BuildId");
-            var prNumber = tl.getVariable("System.PullRequest.PullRequestId");
-            if (prNumber == undefined)
-                prNumber = tl.getVariable("System.PullRequest.PullRequestNumber");
-            console.log("buildReason: " + buildReason);
-            console.log("buildId: " + buildId);
-            console.log("sourceBranchName: " + sourceBranchName);
+            var serviceName = tl.getInput("servicename", true);
+            var env = tl.getInput("environment");
+            var prNumber = gitops.getPullRequestId();
+            console.log("serviceName: " + serviceName);
+            console.log("env: " + env);
             console.log("prNumber: " + prNumber);
-            var buildTag = yield gitops.generateBuildNumber(buildReason, buildId, sourceBranchName, prNumber);
-            gitops.setBuildVariable("build.updatebuildnumber", buildTag.toLowerCase());
+            var namespace = yield gitops.generateNamespace(serviceName, env, prNumber);
+            gitops.setOutputVariable("namespace", namespace.toLowerCase());
         }
         catch (err) {
             tl.setResult(tl.TaskResult.Failed, err.message);
