@@ -95,17 +95,30 @@ export async function getPullRequestIdByCommitIdAsync(
   var connection = new web.WebApi(accountUri, creds);
   gitClient = connection.getGitApi();
 
+  console.log("repoId: " + repoId);
+
   let queryInput = {
     items: [commitId],
     type: gitInterfaces.GitPullRequestQueryType.LastMergeCommit
   } as gitInterfaces.GitPullRequestQueryInput;
 
+  console.log("quertInput:");
+  console.log(queryInput);
+
   let queries = {
     queries: [queryInput]
   } as gitInterfaces.GitPullRequestQuery;
 
+  console.log("queries:");
+  console.log(queries);
+
   var queryResult = await gitClient.getPullRequestQuery(queries, repoId);
+
+  console.log("queryResult:");
+  console.log(queryResult);
+
   var qs = queryResult.results;
+
   prNumber = qs[0].pullRequestId.toString();
   return Promise.resolve(prNumber);
 }
