@@ -47,7 +47,7 @@ export function setBuildVariable(name: string, value: string) {
   console.log("##vso[" + name + "]" + value);
 }
 export function setOutputVariable(name: string, value: string) {
-  console.log("##vso[task.setvariable variable="+name+";isOutput=true;" + value);
+  console.log("##vso[task.setvariable variable="+name+";isOutput=true;]" + value);
 }
 
 export function stopOnNonPrBuild() {
