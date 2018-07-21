@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "gitops-extension",
     "name": "GitOps with Kubernetes tools",
-    "version": "0.11.2",
+    "version": "0.11.3",
     "publisher": "asabbour",
     "targets": [
         {
@@ -15,7 +15,7 @@
         "Integrate"
     ],
     "//uncomment 'icons' below to include a custom icon": "",
-    "//icons": {
+    "icons": {
         "default": "images/extension-icon.png"
     },
     "files": [
