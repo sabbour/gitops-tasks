@@ -1,6 +1,6 @@
 import tl = require('vsts-task-lib/task');
 import * as gitops from "common-gitops";
-
+import * as gitInterfaces from "vso-node-api/interfaces/GitInterfaces";
 
 var pullRequestId: string;
 
@@ -29,8 +29,8 @@ async function run() {
         // Get the pull request details
         let prNumber = Number.parseInt(pullRequestId);
         let pr = await gitops.getPullRequestByIdAsync(prNumber);
-        gitops.setOutputVariable("mergestatus",pr.mergeStatus.toLowerCase());
-        gitops.setOutputVariable("prstatus",pr.status.toLowerCase());
+        gitops.setOutputVariable("mergestatus",gitInterfaces.PullRequestAsyncStatus[pr.mergeStatus]);
+        gitops.setOutputVariable("prstatus",gitInterfaces.PullRequestStatus[pr.status]);
         tl.setResult(tl.TaskResult.Succeeded, "Updated prnumber, mergestatus, prstatus output vars.");
     } else {
         tl.setResult(tl.TaskResult.Succeeded, "Skipping. No pull request id, nothing to do here.");
