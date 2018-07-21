@@ -9,6 +9,7 @@
     "clean": "rm -rf node_modules dist",
     "clean-install": "npm run clean && npm install",
     "clean-build": "npm run clean-install && npm run build",
+    "package": "npm run clean-build && npm pack",
     "test": "mocha --reporter spec"
   },
   "repository": {
