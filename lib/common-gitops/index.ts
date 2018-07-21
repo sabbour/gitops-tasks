@@ -95,32 +95,31 @@ export async function getPullRequestIdByCommitIdAsync(
   var connection = new web.WebApi(accountUri, creds);
   gitClient = connection.getGitApi();
 
-  console.log("repoId: " + repoId);
-
   let queryInput = {
     items: [commitId],
     type: gitInterfaces.GitPullRequestQueryType.LastMergeCommit
   } as gitInterfaces.GitPullRequestQueryInput;
 
-  console.log("quertInput:");
-  console.log(queryInput);
-
   let queries = {
     queries: [queryInput]
   } as gitInterfaces.GitPullRequestQuery;
 
-  console.log("queries:");
-  console.log(queries);
-
   var queryResult = await gitClient.getPullRequestQuery(queries, repoId);
+  var prQuery = queryResult.results[0][commitId][0].pullRequestId
+  return Promise.resolve(prQuery.toString());
+}
 
-  console.log("queryResult:");
-  console.log(queryResult);
-
-  var qs = queryResult.results;
-
-  prNumber = qs[0].pullRequestId.toString();
-  return Promise.resolve(prNumber);
+export async function getPullRequestByIdAsync(
+  prNumber: number
+): Promise<gitInterfaces.GitPullRequest> {
+  var gitClient: git.IGitApi;
+  var accountUri: string = tl.getVariable("System.TeamFoundationCollectionUri");
+  var accessToken = getBearerToken();
+  var repoId = tl.getVariable("Build.Repository.Id");
+  var creds = web.getBearerHandler(accessToken);
+  var connection = new web.WebApi(accountUri, creds);
+  gitClient = connection.getGitApi();
+  return gitClient.getPullRequestById(prNumber);
 }
 
 export function getBearerToken() {
